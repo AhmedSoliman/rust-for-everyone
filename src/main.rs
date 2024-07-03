@@ -1,48 +1,32 @@
-#[derive(Debug)]
-enum Either<'a, 'b> {
-    This(&'a str),
-    That(&'b str),
+use rust_for_everyone::{Amount, Currency};
+
+#[derive(Debug, Clone, Copy)]
+pub struct USD;
+
+impl Currency for USD {
+    const CODE: &'static str = "USD";
+    const SYMBOL: &'static str = "$";
+    const RATIO: u8 = 100;
 }
 
-#[derive(Clone)]
-struct Employee {
-    name: String,
-    age: u32,
-}
+#[derive(Debug, Clone, Copy)]
+pub struct GBP;
 
-fn get_name<'a>(employee_1: &'a Employee) -> &'a str {
-    &employee_1.name
+impl Currency for GBP {
+    const CODE: &'static str = "GBP";
+    const SYMBOL: &'static str = "£";
+    const RATIO: u8 = 100;
 }
-
-fn who_is_older<'a, 'b>(employee_1: &'a Employee, employee_2: &'b Employee) -> Either<'a, 'b> {
-    if employee_1.age > employee_2.age {
-        Either::This(&employee_1.name)
-    } else {
-        Either::That(&employee_2.name)
-    }
-}
-// fn who_is_older<'a>(employee_1: &'a Employee, employee_2: &'a Employee) -> &'a str {
-//     if employee_1.age > employee_2.age {
-//         &employee_1.name
-//     } else {
-//         &employee_2.name
-//     }
-// }
 
 fn main() {
-    let mahmoud = Employee {
-        name: "Mahmoud".to_string(),
-        age: 22,
-    };
+    let a = Amount::new(100, USD);
+    let z = Amount::new(100, USD);
 
-    let name = get_name(&mahmoud);
+    let b = Amount::new(88, GBP);
 
-    println!("My name is {}", name);
+    println!("Amount of a={:#}", a);
+    println!("Amount of b={}", b);
 
-    let ahmed = Employee {
-        name: "Ahmed".to_string(),
-        age: 20,
-    };
-
-    println!("The older is {:?}", who_is_older(&mahmoud, &ahmed));
+    println!("Amount of a+z={}", a + z);
+    println!("Amount of a+b={}", a + b);
 }
